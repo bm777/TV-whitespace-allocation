@@ -26,7 +26,32 @@ class BTS():
         for i in range(len(self.canals)-2):
             self.db["unused"].append([self.canals[i], self.canals[i+1]-1])
 
+    def consult(self):
+        return self.db
+
+    def process(self, request):
+        if request == "demand":
+            if self.consult()["unused"] != []:
+                last =  self.consult()["unused"][-1]
+                del self.consult()["unused"][-1]
+                self.db["used"].append(last)
+                return last
+            else:
+                return
+        else:
+            if request in self.consult()["used"]:
+                index = self.consult()["used"].index(request)
+                revoked = self.consult()["used"][index]
+                del self.consult()["used"][index]
+                self.consult()["unused"].append(revoked)
+
 if __name__ == '__main__':
     bts = BTS()
     bts.set_canals()
-    print(bts.db)
+    print("---", bts.db)
+    for i in range(34):
+        bts.process("demand")
+        print("{}---".format(i), bts.db)
+
+    bts.process(bts.db["used"][-1])
+    print("----", bts.db)
