@@ -47,11 +47,31 @@ class BTS():
 
 if __name__ == '__main__':
     bts = BTS()
-    bts.set_canals()
-    print("---", bts.db)
-    for i in range(34):
-        bts.process("demand")
-        print("{}---".format(i), bts.db)
+    #######################################################""
+    host = "127.0.0.1"
+    port = 12345
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((host, port))
+    s.listen(5)
+    print("Server launched ...")
 
-    bts.process(bts.db["used"][-1])
-    print("----", bts.db)
+    while True:
+        conn, addr = s.accept()
+        print('Connected by', addr)
+        data = conn.recv(2048)
+        if not data:
+            break
+        print("======= data = ", data.decode())
+        #######################################################"
+
+        bts.set_canals()
+        print("---", bts.db)
+        for i in range(1):
+            bts.process("demand")
+            print("{}---".format(i), bts.db)
+
+        final = bts.process(bts.db["used"][-1])
+        print("----", bts.db)
+        data = pickle.dumps(final)
+
+        conn.sendall(data)
