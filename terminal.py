@@ -1,4 +1,4 @@
-import socket
+import socket, pickle
 
 
 
@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     s.close()
 
-    print("The time got from the bts server is ")
+    print("The time got from the bts server is ", pickle.loads(data))
 
-    for elt in pickle.loads(data):
-        print("----",elt)
+    # for elt in pickle.loads(data):
+    #     print("----",elt)
