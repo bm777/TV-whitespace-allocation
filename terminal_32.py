@@ -8,7 +8,8 @@ if __name__ == '__main__':
     port = 12345
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, port))
-    s.sendall(b"demand")
+    for i in range(32):
+        s.sendall(b"demand")
     # Receive no more than 1024 bytes
     data = s.recv(2048)
 
