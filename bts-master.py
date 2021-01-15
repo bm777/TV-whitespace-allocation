@@ -70,9 +70,8 @@ if __name__ == '__main__':
         data = conn.recv(2048)
         if not data:
             break
-        print("======= request from terminal = ", data.decode())
-
-        f = bts.process("demand")
+        if type(data.decode()) == type("str")
+        f = bts.process(pickle.load(data))
         print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         data = pickle.dumps(f)
         time.sleep(1.0)
