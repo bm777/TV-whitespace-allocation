@@ -9,9 +9,8 @@ if __name__ == '__main__':
         port = 12345
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
-
-        s.sendall(b"demand")
+        demand = ["demand", "demand"]
+        s.sendall(pickle.dumps(demand))
         data = s.recv(2048)
         print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         print("received: ", pickle.loads(data))
-    

@@ -41,14 +41,14 @@ class BTS():
 
                 return last
             else:
-                return []
+                return ["Unavailable MHz"]
         else:
             if request in self.db["used"]:
                 index = self.db["used"].index(request)
                 revoked = self.db["used"][index]
                 del self.db["used"][index]
                 self.db["unused"].append(revoked)
-                return []
+                return ["revoked MHz"]
 
 if __name__ == '__main__':
     start = time.time()
@@ -63,19 +63,25 @@ if __name__ == '__main__':
     bts.set_canals()
     bts.present()
     print("Server launched ...")
+    print("-----------------------------------------------------------------------")
     while True:
         conn, addr = s.accept()
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n")
         print('Connected by', addr)
         data = conn.recv(2048)
         if not data:
             break
-        if type(data.decode()) == type("str")
-        f = bts.process(pickle.load(data))
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        data = pickle.dumps(f)
+
+        tmp = list(pickle.loads(data))
+        if tmp[0] == "demand":
+            f = bts.process(tmp[0])
+        else:
+            f = bts.process(pickle.loads(data))
+
+        result = pickle.dumps(f)
         time.sleep(1.0)
 
         bts.present()
-        conn.sendall(data)
+        conn.sendall(result)
         # conn.close()
